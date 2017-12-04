@@ -98,48 +98,54 @@ for i = 1:c
   proj(i,:)=Data(i,:)*V;
 end
 
-%user choose a picture 
-[fname path] = uigetfile('Open a face to recognize', '.pgm');
-fname = strcat(path, fname);
-im = double(imread(fname));
-%display picture
-figure(444)
-pcolor(flipud(im)), shading interp, colormap(gray)
-title('image to recognize')
+while(1)
+  %user choose a picture 
+  [fname path] = uigetfile('Open a face to recognize', '.pgm');
+  fname = strcat(path, fname);
+  im = double(imread(fname));
+  %display picture
+  figure(444)
+  pcolor(flipud(im)), shading interp, colormap(gray)
+  title('image to recognize')
 
-%reshape user selected picture to match a row of Data matrix
-Vec=reshape(im,1,112,92);
-%calulate projection vector of user selected picture
-projrec=Vec*V;
+  %reshape user selected picture to match a row of Data matrix
+  Vec=reshape(im,1,112,92);
+  %calulate projection vector of user selected picture
+  projrec=Vec*V;
 
-%calculate error from projection array and user projection
-for i = 1:c
-  error(i,:)=abs(proj(i,:)-projrec);
-end
+  %calculate error from projection array and user projection
+  for i = 1:c
+    error(i,:)=abs(proj(i,:)-projrec);
+  end
 
-index = -1;
-image = -1;
-%sum the elements of error matrix 
-for i = 1:c
-  thesum(i,:)=sum(error(i,:));
-  thesum(i,:)/c
-end
-%find min element of sum array
-[M, I] = min(thesum/c)
-myset = detectSet(index);
+  index = -1;
+  image = -1;
+  %sum the elements of error matrix 
+  for i = 1:c
+    thesum(i,:)=sum(error(i,:));
+    thesum(i,:)/c
+  end
+  %find min element of sum array
+  [M, I] = min(thesum/c)
+  myset = detectSet(index);
 
-%check if user selected picture is in the dataset
-if(M < 450)
-  myset = detectSet(I);
-  if(M == 0)
-    image = mod(I,quantity);
-    if(image == 0)
-      image = quantity
-    end 
-    msgbox(sprintf('image %d form set %s', image,myset));
+  %check if user selected picture is in the dataset
+  if(M < 450)
+    myset = detectSet(I);
+    if(M == 0)
+      image = mod(I,quantity);
+      if(image == 0)
+        image = quantity
+      end 
+      msgbox(sprintf('image %d form set %s', image,myset));
+    else
+      msgbox(sprintf('detected %s', myset));
+    end
   else
     msgbox(sprintf('detected %s', myset));
+  end  
+  choice = menu('Continue','Yes','no');
+  if choice == 2 | choice == 0
+    break;
   end
-else
-  msgbox(sprintf('detected %s', myset));
-end  
+end

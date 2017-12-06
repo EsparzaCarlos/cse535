@@ -7,6 +7,9 @@ function [myset] = detectSet(i)
     myset = 'set3';
   elseif(i <= 20 && i > 15)
     myset = 'set4';
+  elseif(i <= 25 && i > 20)
+    myset = 'set5';
   else
     myset = 'no set';
   end    
+   

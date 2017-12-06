@@ -6,6 +6,14 @@ set1folder = fullfile(pwd,'att_faces\s1');
 set2folder = fullfile(pwd,'att_faces\s2');
 set3folder = fullfile(pwd,'att_faces\s3');
 set4folder = fullfile(pwd,'att_faces\s4');
+set5folder = fullfile(pwd,'att_faces\s5');
+set6folder = fullfile(pwd,'att_faces\s6');
+set7folder = fullfile(pwd,'att_faces\s7');
+set8folder = fullfile(pwd,'att_faces\s8');
+set9folder = fullfile(pwd,'att_faces\s9');
+set10folder = fullfile(pwd,'att_faces\s10');
+set11folder = fullfile(pwd,'att_faces\s11');
+set12folder = fullfile(pwd,'att_faces\s12');
 
 %set number of people amd quantity of pictures per person
 persons = 4; %how many rows of data of different people
@@ -27,6 +35,7 @@ for i = 1:persons
     basefile = srcFile(j).name;
     filename=fullfile(eval(checkfiles), basefile);
     A{j+(5*(i-1))}=double(imread(filename));
+    j+(5*(i-1))
   end
 end 
 
@@ -48,11 +57,13 @@ for i = 1:quantity
     avg2=A{i+5};
     avg3=A{i+10};
     avg4=A{i+15};
+    %avg5=A{i+20};
   else  
     avg1=avg1+A{i};
     avg2=avg2+A{i+5};
     avg3=avg3+A{i+10};
     avg4=avg4+A{i+15};
+    %avg5=avg5+A{i+20};
   end
 end
 
@@ -61,6 +72,7 @@ avg1=avg1/quantity;
 avg2=avg2/quantity;
 avg3=avg3/quantity;
 avg4=avg4/quantity;
+%avg5=avg5/quantity;
 %{
 %plot the average faces
 figure(222)
@@ -130,7 +142,15 @@ while(1)
   myset = detectSet(index);
 
   %check if user selected picture is in the dataset
-  if(M < 450)
+  thresh = 0;
+  if persons == 4
+    thresh = 450;
+  elseif persons == 5
+    thresh = 370;
+  else
+    thresh = 450
+  end
+  if(M < thresh)
     myset = detectSet(I);
     if(M == 0)
       image = mod(I,quantity);
